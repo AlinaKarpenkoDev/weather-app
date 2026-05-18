@@ -10,12 +10,12 @@ export default function Forecast({ forecast, isDark, getWeatherIcon }) {
     <div>
       {forecast && (
         <div className="mt-12 w-[95%] max-w-4xl">
-          <div className="flex justify-center gap-3 w-full pb-4 px-2">
+          <div className="flex flex-wrap md:flex-nowrap justify-center gap-3 w-full pb-4 px-2">
             {forecast.time.map((item, index) => {
               return (
                 <div
                   key={index}
-                  className={`flex flex-col items-center p-4 rounded-xl flex-1 shadow-sm shrink-0 transition-colors duration-500 backdrop-blur-sm ${
+                  className={`flex flex-col items-center p-3 sm:p-4 rounded-xl w-[47%] sm:w-auto sm:flex-1 shadow-sm transition-colors duration-500 backdrop-blur-sm ${
                     isDark
                       ? "bg-neutral-600 text-black border border-zinc-700"
                       : "bg-white/80 text-gray-800"
