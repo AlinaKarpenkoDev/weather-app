@@ -4,7 +4,32 @@ import CurrentWeather from "./components/CurrentWeather";
 import Forecast from "./components/Forecast";
 import DarkTheme from "./components/DarkTheme";
 
-const getWeatherIcon = (code) => {
+// Для поточної погоди (ми беремо тільки те, що ти реально виводиш на екран)
+export interface CurrentWeatherType {
+  temperature: number;
+  windspeed: number;
+  weathercode: number;
+}
+
+// Для прогнозу на 7 днів (API повертає об'єкт з масивами для кожного дня)
+export interface ForecastType {
+  time: string[];
+  weathercode: number[];
+  temperature_2m_max: number[];
+  temperature_2m_min: number[];
+}
+
+// Для міст, які ми шукаємо (підказки)
+export interface SuggestionType {
+  name: string;
+  country: string;
+  admin1?: string;
+  admin2?: string;
+  latitude: number;
+  longitude: number;
+}
+
+const getWeatherIcon = (code: number) => {
   if (code === 0) return "☀️";
   if (code >= 1 && code <= 3) return "☁️";
   if (code >= 45 && code <= 48) return "🌫️";
@@ -14,7 +39,7 @@ const getWeatherIcon = (code) => {
   return "🌤️";
 };
 
-function getBackgroundClass(weather) {
+function getBackgroundClass(weather: CurrentWeatherType | null) {
   if (!weather) return "bg-slate-100";
   if (weather.temperature < 10) return "bg-sky-200";
   if (weather.temperature >= 10 && weather.temperature <= 25)
@@ -25,13 +50,13 @@ function getBackgroundClass(weather) {
 export default function App() {
   const [city, setCity] = useState(""); //(рядок пошуку)
   const [nameCity, setNameCity] = useState(""); //назва міста, яка вже знайдена
-  const [weather, setWeather] = useState(null); //  Об'єкт з поточною погодою
+  const [weather, setWeather] = useState<CurrentWeatherType | null>(null); //  Об'єкт з поточною погодою
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const [forecast, setForecast] = useState(null); //прогноз погоди на 7 днів
+  const [forecast, setForecast] = useState<ForecastType | null>(null); //прогноз погоди на 7 днів
 
-  const [suggestions, setSuggestions] = useState([]); // Масив міст-підказок
+  const [suggestions, setSuggestions] = useState<SuggestionType[]>([]); // Масив міст-підказок
   const [isDark, setIsDark] = useState(() => {
     return localStorage.getItem("theme") === "dark";
   });
@@ -40,7 +65,7 @@ export default function App() {
     localStorage.setItem("theme", isDark ? "dark" : "light");
   }, [isDark]);
 
-  const dropdownRef = useRef(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!city || city.trim() === "") {
@@ -74,8 +99,11 @@ export default function App() {
 
   // Слідкуємо за кліками поза списком
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setSuggestions([]);
       }
     };
@@ -174,7 +202,7 @@ export default function App() {
     }
   };
 
-  const handleSuggestionClick = (cityName) => {
+  const handleSuggestionClick = (cityName: string) => {
     setCity(cityName);
     setSuggestions([]);
   };

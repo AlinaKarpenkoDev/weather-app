@@ -1,4 +1,13 @@
 import WeatherSkeleton from "./WeatherSkeleton";
+import { CurrentWeatherType } from "../App";
+
+interface CurrentWeatherProps {
+  error: string;
+  isLoading: boolean;
+  nameCity: string;
+  weather: CurrentWeatherType | null;
+  getWeatherIcon: (code: number) => string;
+}
 
 export default function CurrentWeather({
   error,
@@ -6,7 +15,7 @@ export default function CurrentWeather({
   nameCity,
   weather,
   getWeatherIcon,
-}) {
+}: CurrentWeatherProps) {
   return (
     <div>
       {error && (

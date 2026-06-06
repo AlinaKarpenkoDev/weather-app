@@ -1,5 +1,17 @@
-export default function Forecast({ forecast, isDark, getWeatherIcon }) {
-  const formatDate = (dateString) => {
+import type { ForecastType } from "../App";
+import React from "react";
+
+interface ForecastProps {
+  forecast: ForecastType | null;
+  isDark: boolean;
+  getWeatherIcon: (code: number) => string;
+}
+export default function Forecast({
+  forecast,
+  isDark,
+  getWeatherIcon,
+}: ForecastProps) {
+  const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("uk-UA", {
       weekday: "short",

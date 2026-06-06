@@ -1,3 +1,17 @@
+import type { SuggestionType } from "../App";
+
+interface SearchBarProps {
+  dropdownRef: React.RefObject<HTMLDivElement | null>;
+  city: string;
+  setCity: (value: string) => void;
+  searchWeather: () => void;
+  suggestions: SuggestionType[];
+  isDark: boolean;
+  handleSuggestionClick: (value: string) => void;
+  isLoading: boolean;
+  getUserLocation: () => void;
+}
+
 export default function SearchBar({
   dropdownRef,
   city,
@@ -8,7 +22,7 @@ export default function SearchBar({
   handleSuggestionClick,
   isLoading,
   getUserLocation,
-}) {
+}: SearchBarProps) {
   return (
     <div className="flex gap-2 mt-4">
       <div ref={dropdownRef} className="relative w-full">

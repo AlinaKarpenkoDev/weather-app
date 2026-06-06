@@ -1,4 +1,9 @@
-export default function DarkTheme({ setIsDark, isDark }) {
+interface DarkThemeProps {
+  isDark: boolean;
+  setIsDark: (value: boolean) => void;
+}
+
+export default function DarkTheme({ setIsDark, isDark }: DarkThemeProps) {
   return (
     <button
       onClick={() => setIsDark(!isDark)}
